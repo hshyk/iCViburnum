@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="row">
+    <h1>{{ taxon.scientificName }}</h1>
+    <div class="col-md-7">
+        <h2>Characteristics</h2>
+        <ul>
+        {% for charactertype, characters in taxon|statetext %}
+           <li>
+               <strong>{{ charactertype }}</strong>
+               <ul>
+             {% for character, states in characters %}
+                 <li>
+                 	<strong>{{ character }}</strong>
+                     <ul>
+                     {% for state in states %}
+                         <li>{{ state  }}</li>
+                     {% endfor %}
+                     </ul>
+                 </li>
+             {% endfor %}
+             </ul>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-5">
+    	<h2>Images</h2>
+    	{% for image in images %}
+    	  <img src="{{ virtualviburnum_image_server ~ image.thumbPath  }}" />
+    	{% endfor %}
+    </div>
+    </div>
+
+{% endblock %}

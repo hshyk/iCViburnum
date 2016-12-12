@@ -15,6 +15,14 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+        	new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+        	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+        	new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+        	new FOS\UserBundle\FOSUserBundle(),
+            new Fungio\GoogleMapBundle\FungioGoogleMapBundle(),
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
+            new Snowcap\ImBundle\SnowcapImBundle(),
             new AppBundle\AppBundle(),
         ];
 
@@ -23,6 +31,11 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+        }
+        
+        if (php_sapi_name() === 'cli') {
+            $bundles[] = new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle();
         }
 
         return $bundles;

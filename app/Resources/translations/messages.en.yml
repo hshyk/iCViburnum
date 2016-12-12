@@ -1,0 +1,25 @@
+menu:
+    home: Home
+    login: Login
+    register: Register
+    user: Dashboard
+    search: Search
+    about: About
+first_name: First Name
+last_name: Last Name
+organism id: Organism
+
+form:
+    observation:
+        organism: Viburnum observed
+        howadd: How would you like to add the location to this observation?
+        location:
+            current: Use my current location
+            address: Type an address
+            region: Select by region
+            map: Select on map
+            previous:  Use a previously added location
+        locationdetail: Location description
+        numberseen: Number seen
+    search:
+        locationoptions: Select location

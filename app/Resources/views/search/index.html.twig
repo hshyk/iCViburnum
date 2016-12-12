@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Search for Viburnum</h1>
+
+  <p><a class="btn btn-default" href="{{ path('search_name') }}">Search by Name</a></p>
+  <p><a class="btn btn-default" href="{{ path('search_location') }}">Search by Location</a></p>
+  <p><a class="btn btn-default" href="{{ path('search_description') }}">Search by Description</a></p>
+{% endblock %}

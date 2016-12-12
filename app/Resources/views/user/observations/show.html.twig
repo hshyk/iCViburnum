@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ observation.locationdetail }}</h1>
+    <div class="panel panel-info">
+            <div class="panel-body">
+              <div class="row">              
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Viburnum</td>
+                        <td>{{ observation.organism.taxon.scientificName }}</td>
+                      </tr>
+                      <tr>
+                        <td>Location Details</td>
+                        <td>{{ observation.locationdetail }}</td>
+                      </tr>
+                      <tr>
+                        <td>Status</td>
+                        <td>{{ observation.status.name }}</td>
+                      </tr>
+                   
+                         <tr>
+                        <td>Date Observed</td>
+                        <td>{% if observation.dateObserved %}{{ observation.dateObserved|date('Y-m-d') }}{% endif %}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+              </div>
+              {% for image in observation.images %}
+       <img src="{{ imresize(image.filename,'x100') }}" />
+    {% endfor %}
+    <p>&nbsp;</p>
+    <p><a href="{{ path('user_observations_index') }}" class="btn btn-default">Back to the list</a><br /><br />
+    <a href="{{ path('user_observations_edit', { 'id': observation.id }) }}" class="btn btn-default">Edit</a><br />
+     {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-danger">
+            {{ form_end(delete_form) }}
+              </p>
+            </div>
+          </div>
+</div>
+{% endblock %}

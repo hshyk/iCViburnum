@@ -2,18 +2,24 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+    icviburnum_database_host:     127.0.0.1
+    icviburnum_database_port:     ~
+    icviburnum_database_name:     symfony
+    icviburnum_database_user:     root
+    icviburnum_database_password: ~
+    
+    virtualviburnum_database_host:     ~
+    virtualviburnum_database_port:     ~
+    virtualviburnum_database_name:     ~
+    virtualviburnum_database_user:     ~
+    virtualviburnum_database_password: ~
+    virtualviburnum_image_server: ~
+   
+    googlemaps_key: ~
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
     mailer_user:       ~
     mailer_password:   ~
-
-    # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    
+    secret:            ~

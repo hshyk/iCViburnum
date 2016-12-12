@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@AppBundle/Resources/icviburnum/css/search/search.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>My Lifelist</h1>
+<p>&nbsp;</p>
+	<div class="row">
+    <div id="resultlist">
+    {% for organism in organisms %}
+       {% set scientificName = organism.taxon.scientificName %}
+    	<div class="col-md-3 col-sm-6">
+		  <div class="panel panel-default text-center"> 
+			 <div class="panel-heading"> 
+			    <span class="fa-stack fa-5x">
+			      <a style="" specimenname="{{ scientificName }}" href="" photoid=""> 
+			         <img src="{{ search.getPrimaryImageURL(organism.id) }}" style="max-width:100%; max-height: 100%"  /> 
+			      </a>
+			    </span>
+			 </div> 
+			  <div class="panel-body"> 
+			   <h4>{{  search.getShortName(scientificName) }}</h4> 
+			     <a href="/app_dev.php/taxon/' + value.url +  '" class="btn btn-primary">Learn More</a> 
+			  </div> 
+		 </div> 
+		</div>
+    {% endfor %}
+    </div>
+    </div>
+{% endblock %}
+

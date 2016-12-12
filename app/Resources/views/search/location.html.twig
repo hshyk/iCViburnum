@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ google_map_css(map) }}
+    {% stylesheets filter="scssphp" output="css/search.css"
+    	'@AppBundle/Resources/icviburnum/css/search/search.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ google_map_js(map) }}
+  {{ parent() }}
+  <script>
+        var submitUrl = "/app_dev.php/search/location/ajax";
+        var map = {{ map.javascriptvariable }};
+     </script>
+  {% javascripts '@AppBundle/Resources/blockui/jquery.blockUI.js'
+                 '@AppBundle/Resources/icviburnum/js/search/location.js'
+                  %}
+     <script src="{{ asset_url }}"></script>
+    
+  {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+
+  <h1>Search By Location</h1>
+
+  {{ form_start(form) }}
+      {{ form_row(form.searchOptions) }}
+      <div id="regions">
+      {% set counter = 0 %}
+      {% for region in form.regions %}
+      {{ form_row(region) }}
+      {% endfor %}
+      </div>
+        {{ google_map_container(map) }}
+        {{ form_row(form.latitude) }}
+        {{ form_row(form.longitude) }}
+      <p>&nbsp;</p>
+      <input type="submit" value="Search" class="btn btn-default" />
+    {{ form_end(form) }}
+    <div id="wrapper">
+        <div id="resultlist"></ul>
+    </div>
+{% endblock %}

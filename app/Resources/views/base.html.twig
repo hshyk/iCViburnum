@@ -1,13 +1,61 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %} | iCViburnum</title>
+        {% block stylesheets %}
+            {% stylesheets filter="scssphp" output="css/site.css"
+                '@AppBundle/Resources/bootstrap/assets/stylesheets/_bootstrap.scss' 
+                '@AppBundle/Resources/modern-business/css/modern-business.css'  
+                '@AppBundle/Resources/font-awesome/scss/font-awesome.scss'
+            	'@AppBundle/Resources/icviburnum/css/site.css' 
+            %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+        <!--[if lt IE 9]>
+        	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    	<![endif]-->
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        	<div class="container">
+            	<!-- Brand and toggle get grouped for better mobile display -->
+            	<div class="navbar-header">
+                	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    	<span class="sr-only">Toggle navigation</span>
+                    	<span class="icon-bar"></span>
+                    	<span class="icon-bar"></span>
+                    	<span class="icon-bar"></span>
+                	</button>
+                	<a class="navbar-brand" href="index.html">iCViburnum</a>
+            	</div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                	{{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+               	</div>
+           	</div>
+		</nav>         
+        {% block header %}{% endblock %}
+        <div class="container">
+            {% block body %}{% endblock %}
+    		<footer>
+           		<div class="row">
+                	<div class="col-lg-12">
+                    	<p>Copyright &copy; Yale University Herbarium {{ "now"|date("Y") }}</p>
+                    </div>
+                </div>
+    		</footer>
+       	</div>
+		{% block javascripts %}
+            {% javascripts filter="?jsqueeze" output="js/site.js"
+            	'@AppBundle/Resources/jquery/jquery-1.11.3.js'
+                '@AppBundle/Resources/bootstrap/assets/javascripts/bootstrap.js'
+                '@AppBundle/Resources/bootstrap/assets/javascripts/bootstrap/*.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+	</body>
 </html>

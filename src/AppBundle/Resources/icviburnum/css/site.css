@@ -1,0 +1,60 @@
+.navbar {
+	background-color: #005a31;
+}
+
+.form-component {
+	padding-bottom: 20px;
+}
+
+.content-right {
+	margin-top: 20px;
+}
+
+#fos_user_registration_form div {
+	margin-bottom: 20px;
+}
+
+tr.color {
+	background-color: #F0F0F0;
+}
+
+table.observations { 
+	table-layout: fixed; 
+}
+
+table.observations * td { 
+	width: 23%; 
+}
+
+/*
+body {
+}
+
+.navbar {
+	background-color: #6fd275;
+}
+
+.hero-unit {
+    background-image: url("/img/header.jpg");
+    background-repeat: no-repeat;
+    background-color: #eee;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    padding: 60px;
+}
+
+.span12 {
+	background-color: #dfe7f1;
+}
+
+.span12 #content {
+    padding: 25px;
+}
+
+table.observations tr:nth-of-type(odd){
+  background-color: #efefef;
+}
+
+table.observations tr:nth-of-type(even){
+  background-color: #ffffff;
+} */

@@ -1,3 +1,19 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+about:
+    path: /about
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    static/about.html.twig
+        
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+oneup_uploader:
+    resource: .
+    type: uploader
+    
+snowcap_im:
+  resource: "@SnowcapImBundle/Resources/config/routing.yml"

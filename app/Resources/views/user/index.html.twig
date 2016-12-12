@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>My Account</h1>
+	<p>&nbsp;</p>
+	<div class="row">
+		<div class="col-md-4">
+        	<div class="media">
+            	<div class="pull-left">
+            	   <a href={{ path('fos_user_profile_show') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </a>
+                    </div>
+                    <div class="media-body">
+                      <a href={{ path('fos_user_profile_show') }}>
+                        <h4 class="media-heading">My profile</h4>
+                        </a>
+                    </div>
+                </div>
+               <div class="media">
+            	<div class="pull-left">
+            	   <a href={{ path('fos_user_profile_show') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </a>
+                    </div>
+                    <div class="media-body">
+                      <a href={{ path('fos_user_change_password') }}>
+                        <h4 class="media-heading">Update password</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            		<div class="col-md-4">
+                <div class="media">
+                    <div class="pull-left">
+                    <a href={{ path('user_observations_index') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-leaf fa-stack-1x fa-inverse"></i>
+                        </span> 
+                     </a>
+                    </div>
+                    <div class="media-body">
+                    	<a href={{ path('user_observations_index') }}>
+                        <h4 class="media-heading">View your observations
+                        </h4>
+                       </a>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="pull-left">
+                    	<a href={{ path('user_observations_add') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                        </span> 
+                    </div>
+                    <div class="media-body">
+                    	<a href={{ path('user_observations_add') }}>
+                        <h4 class="media-heading">Create observation</h4>
+                       </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="media">
+                    <div class="pull-left">
+                    <a href={{ path('user_observations_lifelist') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-list fa-stack-1x fa-inverse"></i>
+                        </span> 
+                      </a>
+                    </div>
+                    <div class="media-body">
+                    	<a href={{ path('user_observations_lifelist') }}>
+                        <h4 class="media-heading">View lifelist</h4>
+                       </a>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="pull-left">
+                    	<a href={{ path('fos_user_security_logout') }}>
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-sign-out fa-stack-1x fa-inverse"></i>
+                        </span> 
+                        </a>
+                    </div>
+                    <div class="media-body">
+                   		 <a href={{ path('fos_user_security_logout') }}>
+                        <h4 class="media-heading">Logout</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+   {% endblock %}

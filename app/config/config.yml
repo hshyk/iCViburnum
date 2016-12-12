@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -27,7 +27,10 @@ framework:
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        #save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        # Due to a Syfmony bug the save_path has to be set to ~
+        # http://stackoverflow.com/questions/35208299/symfony-3-0-1-csrf-token-present-but-invalid
+        save_path: ~
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -36,29 +39,84 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        virtualviburnum_image_server: "%virtualviburnum_image_server%"
+    autoescape: "name"
+
+doctrine_cache:
+    providers:
+        vendor_filesystem_metadata_cache:
+            file_system:
+                extension: cache
+                directory: "%kernel.root_dir%/../var/cache/doctrine/metadata"
+        vendor_filesystem_result_cache:
+            file_system:
+                extension: cache
+                directory: "%kernel.root_dir%/../var/cache/doctrine/result"
+        vendor_filesystem_query_cache:
+            file_system:
+                extension: cache
+                directory: "%kernel.root_dir%/../var/cache/doctrine/query"
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #     path:     "%database_path%"
+        default_connection: icviburnum
+        connections:
+            icviburnum:
+                driver:   pdo_pgsql
+                host:     "%icviburnum_database_host%"
+                port:     "%icviburnum_database_port%"
+                dbname:   "%icviburnum_database_name%"
+                user:     "%icviburnum_database_user%"
+                password: "%icviburnum_database_password%"
+                charset:  UTF8
+            virtualviburnum:
+                driver:   pdo_mysql
+                host:     "%virtualviburnum_database_host%"
+                port:     "%virtualviburnum_database_port%"
+                dbname:   "%virtualviburnum_database_name%"
+                user:     "%virtualviburnum_database_user%"
+                password: "%virtualviburnum_database_password%"
+                charset:  UTF8
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
-
+        auto_generate_proxy_classes:  true
+        default_entity_manager:   icviburnum
+        entity_managers:
+            icviburnum:
+                connection:       icviburnum
+                mappings:
+                    AppBundle:
+                        dir:      Entity/iCViburnum
+                dql:
+                    string_functions:
+                        st_contains: Jsor\Doctrine\PostGIS\Functions\ST_Contains 
+                        st_pointfromtext: Jsor\Doctrine\PostGIS\Functions\ST_PointFromText 
+                metadata_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_metadata_cache
+                result_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_result_cache
+                query_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_query_cache
+            virtualviburnum:
+                connection:       virtualviburnum
+                mappings:
+                    AppBundle:
+                        dir:      Entity/VirtualViburnum
+                metadata_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_metadata_cache
+                result_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_result_cache
+                query_cache_driver:
+                    type: service
+                    id: doctrine_cache.providers.vendor_filesystem_query_cache
+                  
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -66,3 +124,100 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        jsqueeze: ~
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+    assets:
+      glyphicons-halflings-ttf:
+        inputs: '@AppBundle/Resources/bootstrap/assets/fonts/bootstrap/glyphicons-halflings-regular.eot'
+        output: 'fonts/glyphicons-halflings-regular.eot'
+      glyphicons-halflings-svg:
+        inputs: '@AppBundle/Resources/bootstrap/assets/fonts/bootstrap/glyphicons-halflings-regular.svg'
+        output: 'fonts/glyphicons-halflings-regular.svg'
+      glyphicons-halflings-ttf:
+        inputs: '@AppBundle/Resources/bootstrap/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf'
+        output: 'fonts/glyphicons-halflings-regular.ttf'
+      glyphicons-halflings-woff:
+        inputs: '@AppBundle/Resources/bootstrap/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf'
+        output: 'fonts/glyphicons-halflings-regular.ttf'
+      glyphicons-halflings-woff2:
+        inputs: '@AppBundle/Resources/bootstrap/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2'
+        output: 'fonts/glyphicons-halflings-regular.woff2'
+      fontawesome-webfont-eot:
+        inputs: '@AppBundle/Resources/font-awesome/fonts/fontawesome-webfont.eot'
+        output: 'fonts/fontawesome-webfont.eot'
+      fontawesome-webfont-svg:
+        inputs: '@AppBundle/Resources/font-awesome/fonts/fontawesome-webfont.svg'
+        output: 'fonts/fontawesome-webfont.svg'
+      fontawesome-webfont-ttf:
+        inputs: '@AppBundle/Resources/font-awesome/fonts/fontawesome-webfont.ttf'
+        output: 'fonts/fontawesome-webfont.ttf'
+      fontawesome-webfont-woff:
+        inputs: '@AppBundle/Resources/font-awesome/fonts/fontawesome-webfont.woff'
+        output: 'fonts/fontawesome-webfont.woff'
+      fontawesome-webfont-otf:
+        inputs: '@AppBundle/Resources/font-awesome/fonts/FontAwesome.otf'
+        output: 'fonts/FontAwesome.otf'
+        
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AppBundle\Entity\iCViburnum\User
+    registration:
+        form:
+            type: UserBundle\Form\Type\RegistrationFormType
+    profile:
+        form:
+            type: UserBundle\Form\Type\ProfileFormType
+    resetting:
+      form:
+        type: UserBundle\Form\Type\ResettingFormType
+      email:
+        from_email:
+          address:        no-reply@yale.edu
+          sender_name:    iCViburnum
+    change_password:
+      form:
+        type: UserBundle\Form\Type\ChangePasswordFormType
+            
+oneup_uploader:
+    mappings:
+        gallery:
+            frontend: blueimp
+            namer: app.file_namer
+            storage:
+                directory: "%kernel.root_dir%/../uploads/"
+
+snowcap_im:
+    web_path: '../web'
+    cache_path: 'images/cache'
+    timeout: 300
+    formats:
+      # resizes to 50 width, at 80% quality
+      small:
+        resize: 50x
+        quality: 80
+      # resizes to fit in 100x100, only if bigger, and remove all crap (meta-data, ...)
+      medium:
+        thumbnail: 100x100>
+      # crop to get exactly 100x100, keeping the maximum area possible, centered
+      square:
+        resize: 100x100^
+        gravity: center
+        crop: 100x100+0+0
+        
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template

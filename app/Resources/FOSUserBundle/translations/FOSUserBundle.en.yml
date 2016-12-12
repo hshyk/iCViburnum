@@ -1,0 +1,19 @@
+profile:
+    show:
+        first_name: First Name
+        last_name: Last Name
+
+form:
+    first_name: First Name
+    last_name: Last Name
+    
+resetting:
+    email:
+        subject: 'iCViburnum Reset Password'
+        message: |
+            Hello %username%!
+
+            To reset your password - please visit %confirmationUrl%
+
+            Regards,
+            iCViburnum

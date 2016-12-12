@@ -1,9 +1,89 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
+
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.postgis_subscriber:
+        class: Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: icviburnum }
+    app.form.characterstics:
+        class: AppBundle\Form\Type\CharacteristicsType
+        arguments: ['@doctrine']
+        tags:
+            - { name: form.type }
+    app.form.regions:
+        class: AppBundle\Form\Type\RegionsType
+        arguments: ['@doctrine']
+        tags:
+            - { name: form.type }
+    app.form.userobservation:
+        class: AppBundle\Form\Type\UserObservationType
+        arguments: ['@doctrine', '@app.form.addresslookup_subscriber' ]
+        tags:
+            - { name: form.type }
+    app.twig_extension.state_text:
+        class: AppBundle\Twig\StateTextExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    app.entity.icviburnum.crossdb_subscriber:
+        class: AppBundle\EventListener\CrossDBEventSubscriber
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+    app.form.addresslookup_subscriber:
+        class: AppBundle\Form\EventListener\AddressLookupSubscriber
+        arguments: ['%googlemaps_key%']
+    app.controller.search:
+        class: AppBundle\Controller\SearchController
+    app.util.organism_util:
+      class: AppBundle\Util\OrganismUtil
+      calls:
+          - [ setContainer,[ '@service_container' ] ]
+    fos_user.register.form.type:
+        class: UserBundle\Form\Type\RegistrationFormType
+        arguments: ['%fos_user.model.user.class%']
+        tags:
+            - { name: form.type, alias: fos_user_registration }
+    fos_user.profile.form.type:
+        class: UserBundle\Form\Type\ProfileFormType
+        arguments: ['%fos_user.model.user.class%']
+        tags:
+            - { name: form.type, alias: fos_user_profile_edit }
+    fos_user.resetting.form.type:
+        class: UserBundle\Form\Type\ResettingFormType
+        arguments: ['%fos_user.model.user.class%']
+        tags:
+            - { name: form.type, alias: fos_user_resetting }
+    fos_user.change_password.form.type:
+        class: UserBundle\Form\Type\ChangePasswordFormType
+        arguments: ['%fos_user.model.user.class%']
+        tags:
+            - { name: form.type, alias: fos_user_change_password }
+    fos_user.registration_complete:
+        class: UserBundle\EventListener\RegistrationListener
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_subscriber }
+    app.upload_listener:
+        class:     AppBundle\EventListener\UploadListener
+        scope: prototype
+        arguments: ["%kernel.root_dir%/../uploads/", "@=service('router.request_context').getBaseUrl()", "@session"]
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+    app.file_namer:
+        class: AppBundle\Uploader\Naming\FileNamer
+        arguments: ["@security.token_storage"]
+    app.entity.icviburnum.imageuploader_subscriber:
+        class: AppBundle\EventListener\ImageUploaderSubscriber
+        arguments: ["@request_stack","@security.token_storage", "%kernel.root_dir%"]
+        tags:
+            - { name: doctrine.event_subscriber, connection: icviburnum }
+    snowcap_im.form_extension:
+        class: Snowcap\ImBundle\Form\Extension\ImageTypeExtension
+        arguments: ['@snowcap_im.manager']
+        tags:
+            -  { name: form.type_extension, alias: snowcap_core_image, extended_type: Symfony\Component\Form\AbstractTypeExtension }

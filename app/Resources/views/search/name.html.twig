@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@AppBundle/Resources/icviburnum/css/search/search.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script>
+        var submitUrl = "/app_dev.php/search/name/ajax";
+  </script>
+  {% javascripts '@AppBundle/Resources/blockui/jquery.blockUI.js'
+                 '@AppBundle/Resources/icviburnum/js/search/name.js'
+                  %}
+     <script src="{{ asset_url }}"></script>
+    
+  {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+  <h1>Search By Name</h1>
+
+  {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <p>&nbsp;</p>
+    <input type="submit" value="Search" class="btn btn-default" />
+    {{ form_end(form) }}
+    <p>&nbsp;</p>
+    <div id="wrapper">
+        <div id="resultlist"></div>
+    </div>
+{% endblock %}

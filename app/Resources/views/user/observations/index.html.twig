@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ google_map_css(map) }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ google_map_js(map) }}
+  {{ parent() }}
+  <script>
+        var map = {{ map.javascriptvariable }};
+     </script>
+{% endblock %}
+
+
+{% block body %}
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">My Observations</h1>
+       {{ google_map_container(map) }}
+<table class="observations">
+<tr>
+{# sorting of properties based on query components #}
+    <th>{{ knp_pagination_sortable(pagination, 'Viburnum', 'og.url') }}</th>
+    <th{% if pagination.isSorted('ob.locationdetail') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'ob.locationdetail') }}</th>
+    <th>{{ knp_pagination_sortable(pagination, 'Date Observed', 'ob.dateObserved') }}</th>
+     <th>{{ knp_pagination_sortable(pagination, 'Status', 's.name') }}</th>
+     <th>View</th>
+     <th>Edit</th>
+</tr>
+
+{# table body #}
+{% for observation in pagination %}
+<tr {% if loop.index is odd %}class="color"{% endif %}>
+	<td>{{ observation.organism.taxon.scientificname }}</td>
+    <td>{{ observation.locationdetail }}</td>
+    <td>{% if observation.dateObserved %}{{ observation.dateObserved|date('Y-m-d') }}{% endif %}</td>
+    <td>{{ observation.status.name }}</td>      
+    <td><a href="{{ path('user_observations_show', {'id': observation.id} ) }}">view</a></td>
+    <td><a href="{{ path('user_observations_edit', {'id': observation.id} ) }}">edit</a></td>
+</tr>
+{% endfor %}
+</table>
+{# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
+</div>
+</div>
+{% endblock %}

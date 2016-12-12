@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ google_map_css(map) }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ google_map_js(map) }}
+  {{ parent() }}
+  <script>
+        var map = {{ map.javascriptvariable }};
+     </script>
+{% endblock %}
+
+{% block body %}
+  <h1>Latest Sightings</h1>
+       {{ google_map_container(map) }}
+  
+{% endblock %}
